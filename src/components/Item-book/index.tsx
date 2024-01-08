@@ -14,32 +14,41 @@ export function ItemBook({ book, handleDelete, handleUpdate }: ItemBookProps) {
     <Wrapper>
       <div>
         <h4>Título: {book.title}</h4>
-        <span>Genero: {book.gender}</span>
+        <div>
+          <span>Autor: {book.author}</span>
+        </div>
+
+        <div>
+          <span>Gênero: {book.gender}</span>
+        </div>
+
+        <div>
+          <span>Ano de publicação: {book.publishYear}</span>
+        </div>
       </div>
+
       <div>
         <span>Descrição</span>
         <p>{book.description}</p>
       </div>
-      <div>
-        <span>Ano de publicação: {book.publishYear}</span>
-        <span>Autor: {book.author}</span>
-      </div>
-
-    <ButtonContainer>
-    <div>
-        <ButtonDel onClick={() => handleDelete(book.id)}>
-          <Trash2 />
-        </ButtonDel>
-      </div>
 
       <div>
-        <ButtoUpdate onClick={() => handleUpdate(book)}>
-          <Pencil />
-        </ButtoUpdate>
+        <span>Data de Registro: {book.registerDate}</span>
       </div>
-    </ButtonContainer>
 
-     
+      <ButtonContainer>
+        <div>
+          <ButtonDel onClick={() => handleDelete(book.id)}>
+            <Trash2 />
+          </ButtonDel>
+        </div>
+
+        <div>
+          <ButtoUpdate onClick={() => handleUpdate(book)}>
+            <Pencil />
+          </ButtoUpdate>
+        </div>
+      </ButtonContainer>
     </Wrapper>
   );
 }

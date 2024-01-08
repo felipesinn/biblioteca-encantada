@@ -39,39 +39,37 @@ export function Inputs() {
 
   function validateForm() {
     const errors: { [key: string]: string } = {};
-  
+
     if (!book.title.trim()) {
       errors.title = "O campo Título é obrigatório.";
     }
-  
+
     if (!book.author.trim()) {
       errors.author = "O campo Autor é obrigatório.";
     }
-  
+
     if (!book.publishYear) {
       errors.publishYear = "O campo Ano da Publicação é obrigatório.";
     }
-  
+
     if (!book.gender.trim()) {
       errors.gender = "O campo Gênero é obrigatório.";
     }
-  
+
     if (!book.description.trim()) {
       errors.description = "O campo Descrição é obrigatório.";
     }
-  
+
     setValidationResult({
       isValid: Object.keys(errors).length === 0,
       errors,
     });
-    
 
-  
     return Object.keys(errors).length === 0;
   }
-  
+
   function saveBook(e: React.FormEvent<HTMLFormElement>) {
-  e.preventDefault();
+    e.preventDefault();
 
     if (book.id !== 0) {
       // Atualizar
@@ -94,11 +92,6 @@ export function Inputs() {
     setBook(emptyBook);
   }
 
-
-  
-
-
-
   function handleDelete(id: number) {
     const filteredBooks = books.filter((b) => b.id !== id);
     setBooks(filteredBooks);
@@ -108,7 +101,6 @@ export function Inputs() {
     <Wrapper>
       <form onSubmit={saveBook}>
         <FormContainer>
-         
           <Input
             placeholder="Digite o Título"
             onChange={handleChange}
@@ -130,6 +122,18 @@ export function Inputs() {
           {validationResult.errors.author && (
             <div style={{ color: "red" }}>{validationResult.errors.author}</div>
           )}
+
+          <label>
+            Ano de publicação
+            <Input
+              placeholder="Digite o Ano da Publicação"
+              onChange={handleChange}
+              name="yearPublication"
+              type="date"
+              value={book.publishYear}
+              max={new Date().toISOString().split("T")[0]}
+            />
+          </label>
 
           <Input
             placeholder="Gênero"
@@ -160,7 +164,7 @@ export function Inputs() {
           </Button>
         </FormContainer>
       </form>
-      
+
       <div>
         <ListBooks books={books} onUpdate={setBook} onDelete={handleDelete} />
       </div>
