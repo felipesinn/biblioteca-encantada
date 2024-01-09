@@ -25,6 +25,14 @@ export const Input = styled.input`
   border: none;
   outline: none;
 `;
+export const Textarea = styled.textarea`
+  width: 100%;
+  padding: 16px 8px;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  font-weight: bold;
+`
 
 export const Button = styled.button`
   background-color: #55DBCB;

@@ -1,7 +1,8 @@
 import { useState } from "react";
 
+import { ValidationResult } from "../../components/validate-Form";
 import { Wrapper } from "./style";
-import { FormContainer, Input, Button } from "./style";
+import { FormContainer, Input, Button, Textarea } from "./style";
 
 import { ListBooks } from "../../components/list-books";
 
@@ -27,50 +28,27 @@ const emptyBook: Book = {
 export function Inputs() {
   const [book, setBook] = useState<Book>(emptyBook);
   const [books, setBooks] = useState<Book[]>([]);
-  const [validationResult, setValidationResult] = useState<{
-    isValid: boolean;
-    errors: { [key: string]: string };
-  }>({ isValid: true, errors: {} });
+  const [validationResult, setValidationResult] = useState<ValidationResult>({
+    errors: {},
+  });
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setBook((prevState) => ({ ...prevState, [name]: value }));
   }
 
-  function validateForm() {
-    const errors: { [key: string]: string } = {};
-
-    if (!book.title.trim()) {
-      errors.title = "O campo Título é obrigatório.";
+  function validate() {
+    const errors = {} as ValidationResult["errors"];
+    if (!book.title) {
+      errors.title = "*preencha com um nome válido";
     }
 
-    if (!book.author.trim()) {
-      errors.author = "O campo Autor é obrigatório.";
-    }
-
-    if (!book.publishYear) {
-      errors.publishYear = "O campo Ano da Publicação é obrigatório.";
-    }
-
-    if (!book.gender.trim()) {
-      errors.gender = "O campo Gênero é obrigatório.";
-    }
-
-    if (!book.description.trim()) {
-      errors.description = "O campo Descrição é obrigatório.";
-    }
-
-    setValidationResult({
-      isValid: Object.keys(errors).length === 0,
-      errors,
-    });
-
-    return Object.keys(errors).length === 0;
+    return errors;
   }
 
   function saveBook(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
+    setValidationResult({ errors: validate() });
     if (book.id !== 0) {
       // Atualizar
       const newBooks = [...books];
@@ -106,22 +84,16 @@ export function Inputs() {
             onChange={handleChange}
             name="title"
             value={book.title}
+            required
           />
-
-          {validationResult.errors.title && (
-            <div style={{ color: "red" }}>{validationResult.errors.title}</div>
-          )}
 
           <Input
             placeholder="Digite o Autor"
             onChange={handleChange}
             name="author"
             value={book.author}
+            required
           />
-
-          {validationResult.errors.author && (
-            <div style={{ color: "red" }}>{validationResult.errors.author}</div>
-          )}
 
           <label>
             Ano de publicação
@@ -140,17 +112,15 @@ export function Inputs() {
             onChange={handleChange}
             name="gender"
             value={book.gender}
+            required
           />
 
-          {validationResult.errors.gender && (
-            <div style={{ color: "red" }}>{validationResult.errors.gender}</div>
-          )}
-
-          <Input
+          <Textarea
             placeholder="Digite uma breve Descrição."
             onChange={handleChange}
             name="description"
             value={book.description}
+            required
           />
 
           {validationResult.errors.description && (
